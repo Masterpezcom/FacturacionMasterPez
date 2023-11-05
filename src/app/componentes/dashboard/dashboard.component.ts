@@ -3,12 +3,11 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-cabecera',
-  templateUrl: './cabecera.component.html',
-  styleUrls: ['./cabecera.component.css']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class CabeceraComponent implements OnInit {
-  dataUser: any;
+export class DashboardComponent implements OnInit {
 
   constructor(private afAuth: AngularFireAuth,
     private router: Router) {
@@ -16,18 +15,10 @@ export class CabeceraComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.afAuth.currentUser.then(user =>{
-      if(user && user.emailVerified) {
-        this.dataUser = user;
-      } else {
-        this.router.navigate(['/sesion']);
-      }
-    })
 
   }
 
   logOut(){
     this.afAuth.signOut().then(() => this.router.navigate(['/sesion']))
   }
-
 }

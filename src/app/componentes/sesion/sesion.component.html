@@ -1,0 +1,37 @@
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+  <div *ngIf="!loading" class="hero-container">
+    <a href="sesion.html" class="hero-logo" data-aos="zoom-in"><img src="assets/img/masterpez-logo.png" alt="Logo Masterpez.com"></a>
+    <h1 data-aos="zoom-in">Bienvenidos al Sistema</h1>
+    <h2 data-aos="fade-up"><img src="assets/img/ingreso.png" width="30" alt="Icono Usuario"> ¡Comencemos!</h2>
+
+<form (ngSubmit)="login()" [formGroup]="sesionUsuario">
+    <div class="form-floating mb-3">
+      <input type="email" formControlName="email" class="form-control" placeholder="nombre@ejemplo.com">
+      <label>Correo Electronico</label>
+      <span *ngIf="sesionUsuario.get('email')?.hasError('required') && sesionUsuario.get('email')?.touched" class="text-danger">
+        *El <strong>Correo </strong>es Requerido.
+      </span>
+      <span *ngIf="sesionUsuario.get('email')?.hasError('email') && sesionUsuario.get('email')?.touched" class="text-danger">
+        *El <strong>Correo </strong>es Invalido.
+      </span>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="password" formControlName="password" class="form-control" placeholder="Contraseña">
+      <label>Contraseña</label>
+      <span *ngIf="sesionUsuario.get('password')?.hasError('required') && sesionUsuario.get('password')?.touched" class="text-danger">
+        *La <strong>Contraseña </strong>es Requerida.
+      </span>
+    </div>
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-outline-success btn-lg" [disabled]="sesionUsuario.invalid">Entrar</button>
+    </div>
+    <p class="mt-3">¿No tienes Usuario? <a routerLink="/registrar-usuario">Crear Usuario</a></p>
+    <p class="mt-3">¿Olvidó su Contraseña? <a routerLink="/recuperar-password">Recuperar Contraseña</a></p>
+  </form>
+
+    </div>
+
+<app-spinner *ngIf="loading"></app-spinner>
+
+</section><!-- End Hero -->

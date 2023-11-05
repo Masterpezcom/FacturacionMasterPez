@@ -35,7 +35,8 @@
               "./src/assets/vendor/glightbox/css/glightbox.min.css",
               "./src/assets/vendor/swiper/swiper-bundle.min.css",
               "./src/assets/css/style.css",
-              "./src/assets/css/bootstrap-datepicker3.min.css"
+              "./src/assets/css/bootstrap-datepicker3.min.css",
+              "node_modules/ngx-toastr/toastr.css"
 
 
             ],
@@ -76,7 +77,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
