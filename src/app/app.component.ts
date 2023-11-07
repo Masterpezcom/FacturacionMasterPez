@@ -1,4 +1,6 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, inject } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import {
   trigger,
   state,
@@ -18,4 +20,12 @@ import {
 })
 export class AppComponent {
   title = 'masterpezcom';
+  firestore: Firestore = inject(Firestore);
+  items$: Observable<any[]>;
+
+  constructor() {
+    const aCollection = collection(this.firestore, 'items')
+    this.items$ = collectionData(aCollection);
+  }
+
 }

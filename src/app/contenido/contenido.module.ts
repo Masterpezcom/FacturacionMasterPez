@@ -5,6 +5,9 @@ import { RevisarComponent } from './revisar/revisar.component';
 import { ServicioComponent } from './servicio/servicio.component';
 import { ClienteComponent } from './cliente/cliente.component';
 import { CierreComponent } from './cierre/cierre.component';
+import { ListClienteComponent } from './cliente/lista-cliente/list-cliente/list-cliente.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -14,17 +17,22 @@ import { CierreComponent } from './cierre/cierre.component';
     RevisarComponent,
     ServicioComponent,
     ClienteComponent,
-    CierreComponent
+    CierreComponent,
+    ListClienteComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule
   ],
   exports:[
     FacturarComponent,
     RevisarComponent,
     ServicioComponent,
     ClienteComponent,
-    CierreComponent
+    CierreComponent,
+    ListClienteComponent
   ]
 })
 export class ContenidoModule { }

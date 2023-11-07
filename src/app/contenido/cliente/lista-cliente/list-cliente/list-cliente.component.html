@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <span class="h3">
+        Listado de Clientes
+      </span>
+      <button class="btn btn-outline-secondary float-end" routerLink="/cliente/">Regresar</button>
+      <h5 *ngIf="clientes.length == 0">No hay datos Registrados para Mostrar</h5>
+      <table style="margin-top: 30px;" *ngIf="clientes.length > 0" class="table table-hover lore mt-5">
+
+          <thead class="table-lore">
+            <tr>
+              <th scope="col">Número de Identficación</th>
+              <th scope="col">Nombre Completo</th>
+              <th scope="col">Direccion de Residencia</th>
+              <th scope="col">Correo Electrónico</th>
+              <th scope="col">Teléfono o Celular</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cliente of clientes">
+              <th scope="row">{{ cliente.identificacion }}</th>
+              <td>{{ cliente.nombre }}</td>
+              <td>{{ cliente.direccion }}</td>
+              <td>{{ cliente.correo }}</td>
+              <td>{{ cliente.telefono }}</td>
+              <td>
+              <i [routerLink]="['/editCliente/', cliente.id]" class="bi bi-pencil-square text-info"></i>
+            </td>
+            <td>
+              <i (click)="eliminarCliente(cliente)" class="bi bi-trash text-danger"></i>
+            </td>
+
+
+
+
+
+

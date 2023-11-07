@@ -5,6 +5,8 @@ import { RegistrarUsuarioComponent } from './componentes/registrar-usuario/regis
 import { VerificarCorreoComponent } from './componentes/verificar-correo/verificar-correo.component';
 import { RecuperarPasswordComponent } from './componentes/recuperar-password/recuperar-password.component';
 import { DashboardComponent } from './componentes/dashboard/dashboard.component';
+import { ListClienteComponent } from './contenido/cliente/lista-cliente/list-cliente/list-cliente.component';
+import { ClienteComponent } from './contenido/cliente/cliente.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'sesion', pathMatch: 'full' },
@@ -12,6 +14,9 @@ const routes: Routes = [
   { path: 'registrar-usuario', component: RegistrarUsuarioComponent },
   { path: 'verificar-correo', component: VerificarCorreoComponent },
   { path: 'recuperar-password', component: RecuperarPasswordComponent },
+  { path: 'cliente', component: ClienteComponent },
+  { path: 'list-cliente', component: ListClienteComponent },
+  { path: 'editCliente/:id', component: ClienteComponent},
   { path: 'dashboard', component: DashboardComponent },
   { path: '**', redirectTo: 'sesion', pathMatch: 'full' },
 ];

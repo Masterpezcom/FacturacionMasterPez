@@ -4,73 +4,46 @@
 
     <div class="section-title" data-aos="fade-up">
       <h2><img src="assets/img/tablero.png" width="30" alt="Icono Tablero"> TABLERO PRINCIPAL</h2>
-        <h4><img src="assets/img/cliente.png" width="30" alt="Icono Factura"> Cliente</h4>
+        <h4><img src="assets/img/cliente.png" width="30" alt="Icono Factura">{{ titulo }}
+          <div *ngIf="loading" class="spinner-border float-end" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div></h4>
     </div>
+      <div *ngIf="submitted && createCliente.invalid" class="p-3 mb-3 text-bg-danger rounded-3" style="border: 5px var(--bs-danger-border-subtle) solid">
+        <strong>*</strong> Todos los Campos son Obligatorios!
+      </div>
+    <form class="mt-4" [formGroup]="createCliente" (ngSubmit)="agregarCliente()">
+      <div class="row">
+          <div class="col">
+          <input type="number" class="form-control"
+          formControlName="identificacion" placeholder="*Número de Identficación">
+        </div>
+      </div>
+        <div class="row">
+        <div class="col">
+          <input type="text" class="form-control mt-3"
+          formControlName="nombre" placeholder="*Nombre Completo">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control mt-3"
+          formControlName="direccion" placeholder="*Direccion de Residencia">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control mt-3"
+          formControlName="correo" placeholder="*Correo Electrónico">
+        </div>
+        <div class="col">
+          <input type="text" class="form-control mt-3"
+          formControlName="telefono" placeholder="*Teléfono o Celular">
+        </div>
+      </div>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-outline-success mr-3">Guardar</button>
+        <button type="text" class="btn btn-outline-secondary float-end" routerLink="/list-cliente" >Cerrar</button>
+      </div>
 
-    <div class="row">
-      <div class="table-responsive">
-        <table class="table align-middle">
-          <tbody>
-            <tr>
-              <td>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>*Tipo de Identficación</option>
-                  <option value="1">Cédula de Ciudadania</option>
-                  <option value="2">NIT</option>
-                  <option value="3">Documento Extranjero</option>
-                  <option value="4">Pasaporte</option>
-                </select>
-              </td>
-              <td>
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="floatingInput1" placeholder="37394453">
-                  <label for="floatingInput1">*Número de Identficación</label>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="floatingInput" placeholder="1115">
-                      <label for="floatingInput">*Nombre Completo</label>
-                    </div>
-              </td>
-              <td>
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="floatingInput2" placeholder="Redes Sociales">
-                      <label for="floatingInput2">*Direccion de Residencia</label>
-                    </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingInput4" placeholder="nombre@ejemplo.com">
-                  <label for="floatingInput4">*Correo Electrónico</label>
-                </div>
-              </td>
-              <td>
-                  <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="floatingInpu3" placeholder="$50.000">
-                      <label for="floatingInput3">*Teléfono o Celular</label>
-                    </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-            <div class="col-6">
-              <button class="btn btn-outline-success" type="submit">Guardar</button>
-            </div>
-          </td>
-          <td>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button type="button" class="btn btn-outline-secondary" type="submit">Cerrar</button>
-              </div>
-            </td>
-          </tr>
-              </tbody>
-            </table>
-          </div>
+    </form>
 
-  </div>
   </div><!-- End Pricing Section -->
