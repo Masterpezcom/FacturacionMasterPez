@@ -7,6 +7,9 @@ import { RecuperarPasswordComponent } from './componentes/recuperar-password/rec
 import { DashboardComponent } from './componentes/dashboard/dashboard.component';
 import { ListClienteComponent } from './contenido/cliente/lista-cliente/list-cliente/list-cliente.component';
 import { ClienteComponent } from './contenido/cliente/cliente.component';
+import { ServicioComponent } from './contenido/servicio/servicio.component';
+import { ListServicioComponent } from './contenido/servicio/list-servicio/list-servicio.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'sesion', pathMatch: 'full' },
@@ -17,6 +20,9 @@ const routes: Routes = [
   { path: 'cliente', component: ClienteComponent },
   { path: 'list-cliente', component: ListClienteComponent },
   { path: 'editCliente/:id', component: ClienteComponent},
+  { path: 'servicio', component: ServicioComponent },
+  { path: 'list-servicio', component: ListServicioComponent },
+  { path: 'editServicio/:id', component: ServicioComponent},
   { path: 'dashboard', component: DashboardComponent },
   { path: '**', redirectTo: 'sesion', pathMatch: 'full' },
 ];

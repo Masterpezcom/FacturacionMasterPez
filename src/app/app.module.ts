@@ -31,11 +31,13 @@ import { RevisarComponent } from './contenido/revisar/revisar.component';
 import { CierreComponent } from './contenido/cierre/cierre.component';
 import { UsuarioComponent } from './configuraciones/usuario/usuario.component';
 import { PieComponent } from './compartido/pie/pie.component';
+import { ListServicioComponent } from './contenido/servicio/list-servicio/list-servicio.component';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment.development';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
     RegistrarUsuarioComponent,
     VerificarCorreoComponent,
     RecuperarPasswordComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    ListServicioComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <span class="h3">
+        Listado de Clientes
+      </span>
+      <button class="btn btn-outline-secondary float-end" routerLink="/dashboard/">Regresar</button>
+      <h5 *ngIf="servicios.length == 0">No hay datos Registrados para Mostrar</h5>
+      <table style="margin-top: 30px;" *ngIf="servicios.length > 0" class="table table-hover lore mt-5">
+
+          <thead class="table-lore">
+            <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Nombre del Servicio</th>
+              <th scope="col">Descripción del Servicio</th>
+              <th scope="col">Precio</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let servicio of servicios">
+              <th scope="row">{{ servicio.codigo }}</th>
+              <td>{{ servicio.nombreSer }}</td>
+              <td>{{ servicio.descripcion }}</td>
+              <td>{{ servicio.precio }}</td>
+              <td>
+              <i [routerLink]="['/editServicio/', servicio.id]" class="bi bi-pencil-square text-info"></i>
+            </td>
+            <td>
+              <i (click)="eliminarServicio(servicio)" class="bi bi-trash text-danger"></i>
+            </td>
