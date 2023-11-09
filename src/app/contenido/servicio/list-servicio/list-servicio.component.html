@@ -23,7 +23,7 @@
               <th scope="row">{{ servicio.codigo }}</th>
               <td>{{ servicio.nombreSer }}</td>
               <td>{{ servicio.descripcion }}</td>
-              <td>{{ servicio.precio }}</td>
+              <td>{{ servicio.precio | currency }}</td>
               <td>
               <i [routerLink]="['/editServicio/', servicio.id]" class="bi bi-pencil-square text-info"></i>
             </td>

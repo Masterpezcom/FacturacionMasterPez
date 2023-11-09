@@ -48,7 +48,6 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
     VerificarCorreoComponent,
     RecuperarPasswordComponent,
     SpinnerComponent,
-    ListServicioComponent
   ],
   imports: [
     BrowserModule,
