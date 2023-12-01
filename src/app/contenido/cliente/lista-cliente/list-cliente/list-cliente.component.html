@@ -9,7 +9,7 @@
       <table style="margin-top: 30px;" *ngIf="clientes.length > 0" class="table table-hover lore mt-5">
 
           <thead class="table-lore">
-            <tr>
+          <tr>
               <th scope="col">Número de Identficación</th>
               <th scope="col">Nombre Completo</th>
               <th scope="col">Direccion de Residencia</th>
@@ -20,6 +20,7 @@
             </tr>
           </thead>
           <tbody>
+
             <tr *ngFor="let cliente of clientes">
               <th scope="row">{{ cliente.identificacion }}</th>
               <td>{{ cliente.nombre }}</td>
@@ -27,7 +28,7 @@
               <td>{{ cliente.correo }}</td>
               <td>{{ cliente.telefono }}</td>
               <td>
-              <i [routerLink]="['/editCliente/', cliente.id]" class="bi bi-pencil-square text-info"></i>
+              <i (click)="editarCliente(cliente)" class="bi bi-pencil-square text-info" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
             </td>
             <td>
               <i (click)="eliminarCliente(cliente)" class="bi bi-trash text-danger"></i>
@@ -36,5 +37,48 @@
 
 
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Cliente</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form [formGroup]="clienteEditarForm" (ngSubmit)="editarFormc()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <input type="number" class="form-control" formControlName="identificacion" placeholder="*Número de Identificación">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="nombre" placeholder="*Nombre Completo">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="direccion" placeholder="*Direccion de Residencia">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="correo" placeholder="*Correo Electrónico">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="telefono" placeholder="*Teléfono o Celular">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-outline-success" (click)="editarFormc()">Guardar Cambios</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
 
 

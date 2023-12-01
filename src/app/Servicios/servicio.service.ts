@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, addDoc, doc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { query, orderBy, updateDoc } from "firebase/firestore";
+import { query, orderBy, updateDoc, DocumentReference, DocumentData } from "firebase/firestore";
+import { setDoc } from 'firebase/firestore';
 
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class servicioService {
+@Injectable({
+  providedIn: 'root'
+})
+export class servicioService {
 
     constructor(private firestore: Firestore) { }
 
@@ -26,10 +27,10 @@ import { query, orderBy, updateDoc } from "firebase/firestore";
       const servicioDocRef = doc(this.firestore, `servicios/${servicio.id}`);
       return deleteDoc(servicioDocRef);
     }
-    /*
-    getServicios(servicio: any) {
-      const servicioDocRef = doc(this.firestore, `servicios/${servicio.id}`);
-      return updateDoc(servicioDocRef, servicio);
 
-    }*/
+    editarS(servicioId: string, nuevosDatos: any) {
+      const servicioDocRef = doc(this.firestore, `servicios/${servicioId}`);
+      return updateDoc(servicioDocRef, nuevosDatos);
+    }
+
   }

@@ -25,8 +25,52 @@
               <td>{{ servicio.descripcion }}</td>
               <td>{{ servicio.precio | currency }}</td>
               <td>
-              <i [routerLink]="['/editServicio/', servicio.id]" class="bi bi-pencil-square text-info"></i>
-            </td>
-            <td>
-              <i (click)="eliminarServicio(servicio)" class="bi bi-trash text-danger"></i>
-            </td>
+                <i (click)="editarServicio(servicio)" class="bi bi-pencil-square text-info" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
+              </td>
+              <td>
+                <i (click)="eliminarServicio(servicio)" class="bi bi-trash text-danger"></i>
+              </td>
+            </tr>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Cliente</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form [formGroup]="servicioEditarForm" (ngSubmit)="editarFormc()">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <input type="number" class="form-control" formControlName="codigo" placeholder="*Código del Servicio">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="nombreSer" placeholder="*Nombre del Servicio">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="descripcion" placeholder="*Descripció del Servicio">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control mt-3" formControlName="precio" placeholder="*Precio del Servicio">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-outline-success" (click)="editarFormc()">Guardar Cambios</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+

@@ -1,5 +1,5 @@
 <!-- ======= About Us Section ======= -->
-<section id="about" class="about">
+<section id="services" class="services">
   <div class="container">
 
     <div class="section-title" data-aos="fade-up">
@@ -10,81 +10,74 @@
     <div class="table-responsive">
       <table class="table align-middle">
         <tr>
-            <td>
-              <div class="row g-2" colspan="2">
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Buscar Cliente por Nombre o por # Identficación...">
-                <datalist id="datalistOptions">
-                  <option value="Alix Lorena">
-                  </option><option value="37394453">
-                </option></datalist>
-                </div>
+        <td scope="row" colspan="2">
+                    <!-- Sección de clientes -->
+<div>
+  <select class="form-select" aria-label="Default select example" id="clienteSelector" [(ngModel)]="clienteSeleccionado" (change)="actualizarTotales()">
+    <option selected>Buscar Cliente</option>
+    <option *ngFor="let cliente of clientes" [value]="cliente">{{ cliente.nombre }}</option>
+  </select>
+</div>
+<td scope="row" colspan="2">
+              <!-- Sección de servicios -->
+<div>
+  <select class="form-select" aria-label="Default select example" id="servicioSelector" [(ngModel)]="serviciosSeleccionados">
+    <option selected>Buscar Servicio</option>
+    <option *ngFor="let servicio of servicios" [value]="servicio">{{ servicio.nombreSer }}</option>
+  </select>
+
+</div>
             </td>
             <td>
-              <div class="row g-2" colspan="2">
-                <input class="form-control" list="datalistOptions1" id="exampleDataList1" placeholder="Buscar Servicio por Nombre o por Código...">
-                <datalist id="datalistOptions1">
-                  <option value="Redes Sociales">
-                  </option><option value="1115">
-                </option></datalist>
-                </div>
+            <button class="btn btn-outline-success" (click)="agregarServicio(serviciosSeleccionados)">Agregar</button>
+          </td>
+        <tr>
+
+          <div *ngIf="serviciosSeleccionados.length > 0">
+            <h3>Servicios Seleccionados:</h3>
+            <ul>
+              <div *ngFor="let item of serviciosSeleccionados | keyvalue">
+                {{ item.key }}: {{ item.value.nombre }} - Cantidad: {{ item.value.cantidad }}
+              </div>
+            </ul>
+          </div>
+
+          <!-- Lista de servicios seleccionados -->
+<div>
+  <table class="table align-middle table-hover">
+    <thead>
+      <tr class="table-lore">
+        <th scope="col">Servicios Seleccionados</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Precio</th>
+      <th> --- </th>
+        <tbody>
+            <tr *ngFor="let servicio of serviciosSeleccionados">
+            <td>{{ servicio.nombreSer }}</td>
+            <td>{{ servicio.cantidad }}</td>
+            <td>{{ servicio.precio }}</td>
+            <td>
+              <i (click)="eliminarServicio(servicio)" class="bi bi-trash text-danger"></i>
             </td>
-        </tr>
-        <tr>
-          <td class="text-end">
-            <div colspan="2">
-            <label for="formGroupExampleInput" class="form-label">Descuento</label>
-          </div>
-          </td>
-          <td>
-            <div colspan="2">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-              <label class="form-check-label" for="inlineCheckbox1">5%</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-              <label class="form-check-label" for="inlineCheckbox2">15%</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-              <label class="form-check-label" for="inlineCheckbox3">30%</label>
-            </div>
-          </div>
-          </td>
-        </tr>
-        <tr>
-          <table class="table table-hover table-bordered border-2">
-            <thead>
-              <tr class="table-lore">
-                <th scope="col">Servicio</th>
-                <th scope="col">Precio Unit</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="table-light">
-                <th scope="row">Redes Sociales</th>
-                <td>$400.000</td>
-                <td>1</td>
-                <td>$400.000</td>
-              </tr>
-              <tr class="table-light">
-                <th scope="row">Productos Digitales</th>
-                <td>$100.000</td>
-                <td>2</td>
-                <td>$200.000</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="2"><div class="col">
-                  <button class="btn btn-outline-success" type="submit">Facturar</button>
-                </div></td>
-                <th scope="col" class="table-lore">Total:</th>
-                <th scope="col" class="table-lore">$600.000</th>
-              </tr>
-            </tfoot>
-    </table>
+
+
+<!-- Descuentos -->
+<div>
+  <select class="form-select" id="descuentoSelector" [(ngModel)]="descuentoSeleccionado" (change)="actualizarTotales()">
+    <option selected>Selecciona un Descuento</option>
+    <option *ngFor="let descuento of descuentos" [value]="descuento">{{ descuento }}%</option>
+  </select>
+</div>
+
+<!-- Resumen de la Factura -->
+<div>
+  <form class="form-floating">
+    <input type="email" class="form-control" id="floatingInputValue" value="Total a Pagar:">
+    {{ totalFactura | currency }}
+    <label for="floatingInputValue">Resumen de la Factura</label>
+    <button class="btn btn-outline-success" (click)="facturar()">Facturar</button>
+  </form>
+</div>
+
 
 <!-- End About Us Section -->

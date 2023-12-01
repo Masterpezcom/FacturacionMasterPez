@@ -26,9 +26,10 @@ import { query, orderBy, updateDoc } from "firebase/firestore";
       const clienteDocRef = doc(this.firestore, `clientes/${cliente.id}`);
       return deleteDoc(clienteDocRef);
     }
-    getCliente(cliente: any) {
-      const clienteDocRef = doc(this.firestore, `clientes/${cliente.id}`);
-      return updateDoc(clienteDocRef, cliente);
 
+    editarC(clienteId: string, nuevosDatos: any) {
+      const clienteDocRef = doc(this.firestore, `clientes/${clienteId}`);
+      return updateDoc(clienteDocRef, nuevosDatos);
     }
+
   }

@@ -3,6 +3,7 @@ import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { servicioService } from 'src/app/Servicios/servicio.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-list-servicio',
@@ -12,21 +13,34 @@ import { ToastrService } from 'ngx-toastr';
 export class ListServicioComponent implements OnInit {
   firestore: Firestore = inject(Firestore)
   servicios: any[] = [];
+  servicioEditar: any = {
+    codigo: '',
+    nombreSer: '',
+    descripcion: '',
+    precio: '',
+  };
+
+  servicioEditarForm: FormGroup;
 
 
   constructor(private _servicioService: servicioService,
     private _deleservicioService: servicioService,
     private _modservicioService: servicioService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private fb: FormBuilder) {
+      this.servicioEditarForm = this.fb.group({
+        codigo: [''],
+        nombreSer: [''],
+        descripcion: [''],
+        precio: [''],
+      });
+    }
 
-
-  }
-
-  ngOnInit(): void {
-    this._servicioService.getServicio().subscribe(servicios => {
-      this.servicios = servicios;
-    })
-  }
+    ngOnInit(): void {
+      this._servicioService.getServicio().subscribe(servicios => {
+        this.servicios = servicios;
+      })
+    }
 
   getServicio() {
     this._servicioService.getServicio().subscribe(data => {
@@ -42,10 +56,7 @@ export class ListServicioComponent implements OnInit {
     console.log(this.servicios);
   }
 
- /* async eliminarCliente(cliente: any) {
-    const response = await this._clienteService.eliminarCliente(cliente);
-    console.log(response);
-  }*/
+
   async eliminarServicio(servicio: any) {
     await this._deleservicioService.eliminarServicio(servicio).then(( ) => {
       console.log('Servicio Eliminado con Exito!');
@@ -58,4 +69,34 @@ export class ListServicioComponent implements OnInit {
 
   }
 
+  async editarServicio(servicio: any) {
+    console.log(servicio);
+    this.servicioEditar = servicio;
+
+    // Asignando los datos al formulario
+    this.servicioEditarForm.setValue({
+      codigo: servicio.codigo,
+      nombreSer: servicio.nombreSer,
+      descripcion: servicio.descripcion,
+      precio: servicio.precio
+
+    });
   }
+
+  editarFormc() {
+    // Obteniendo los valores del formulario
+    const nuevosDatos = this.servicioEditarForm.value;
+
+    // Llamando al servicio para editar el cliente
+    this._servicioService.editarS(this.servicioEditar.id, nuevosDatos)
+      .then(() => {
+        console.log('Cliente Editado con Éxito!');
+        this.toastr.success('El Cliente fue Editado con Éxito!', 'Edición Exitosa', {
+          positionClass: 'toastr-bottom-right'
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+}
