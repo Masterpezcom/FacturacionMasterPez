@@ -9,6 +9,7 @@ import { ListClienteComponent } from './cliente/lista-cliente/list-cliente/list-
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ListServicioComponent } from './servicio/list-servicio/list-servicio.component';
+import { DetFacturaComponent } from './facturar/det-factura/det-factura.component';
 
 
 
@@ -20,7 +21,8 @@ import { ListServicioComponent } from './servicio/list-servicio/list-servicio.co
     ClienteComponent,
     CierreComponent,
     ListClienteComponent,
-    ListServicioComponent
+    ListServicioComponent,
+    DetFacturaComponent
   ],
   imports: [
     CommonModule,

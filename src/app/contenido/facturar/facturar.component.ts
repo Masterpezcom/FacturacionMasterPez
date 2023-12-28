@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { ClienteService } from 'src/app/Servicios/cliente.service';
-import { servicioService } from 'src/app/Servicios/servicio.service';
-import { FacturaService } from 'src/app/Servicios/factura.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as firebase from 'firebase/compat';
 import { ToastrService } from 'ngx-toastr';
+import { FacturaService } from 'src/app/Servicios/factura.service';
+import { ClienteService } from 'src/app/Servicios/cliente.service';
 
 
 @Component({
@@ -11,93 +12,132 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './facturar.component.html',
   styleUrls: ['./facturar.component.css']
 })
-export class FacturarComponent {
+export class FacturarComponent implements OnInit {
+  createFactura: FormGroup;
+  submitted = false;
+  loading = false;
+  id: string | null;
+  titulo = 'Facturar';
+  facturas: any[] = []; // Aquí almacenaremos las facturas obtenidas de Firebase
+  clientes: any[] = []; // Almacenará la lista de clientes obtenida de Firebase
+  servicios: any[] = []; // Almacenará la lista de servicios obtenida de Firebase
+  facturaSeleccionada: any = {}; // Almacenará la factura actualmente seleccionada
+  serviciosSeleccionados: any[] = []; // Almacenará los servicios seleccionados para la factura actual
+  nuevaFactura: any = { descuento: 0 }; // Para almacenar la nueva factura a agregar
+  nuevoServicio: any = {}; // Para almacenar el nuevo servicio a agregar
 
-  clientes: any[] = [];
-  servicios: any[] = [];
-  clienteSeleccionado: any;
-  serviciosSeleccionados: any[] = [];
-  descuentos: number[] = [0, 5, 15, 30];
-  descuentoSeleccionado: number = 0;
-  totalFactura: number = 0;
-  factura: any = {};
 
-  constructor(private clienteService: ClienteService, private servicioService: servicioService,
-              private facturaService: FacturaService) {
-    // Obtener lista de clientes al inicializar el componente
-    this.clienteService.getClientes().subscribe(clientes => {
-      this.clientes = clientes;
-      this.factura = {};
+  constructor(private fb: FormBuilder,
+              private _facturaService: FacturaService,
+              private router: Router,
+              private toastr: ToastrService,
+              private aRoute: ActivatedRoute) {
+                this.createFactura = this.fb.group({
+                  cliente: ['', Validators.required],
+                  servicio: ['', Validators.required],
+                  precio: ['', Validators.required],
+                  cantidad: ['', Validators.required],
+                  descuento: ['', Validators.required],
+                  total: ['', Validators.required],
+                })
+                this.id = this.aRoute.snapshot.paramMap.get('id');
+                console.log(this.id)
+              }
+
+  ngOnInit() {
+    // Cuando se inicializa el componente, obtenemos las facturas, clientes y servicios
+    this.obtenerFacturas();
+    this.obtenerClientes();
+    this.obtenerServicios();
+  }
+
+  obtenerFacturas() {
+    // Obtener las facturas de Firebase
+    this._facturaService.getFacturas().subscribe((data) => {
+      this.facturas = data;
+    });
+  }
+
+  obtenerClientes() {
+    // Obtener la lista de clientes de Firebase
+    this._facturaService.getClientes().subscribe((data) => {
+      this.clientes = data;
+    });
+  }
+
+  obtenerServicios() {
+    // Obtener la lista de servicios de Firebase
+    this._facturaService.getServicio().subscribe((data) => {
+      this.servicios = data;
+    });
+  }
+
+
+  agregarFactura() {
+    // Agregar una nueva factura a Firebase y actualizar la lista
+    this._facturaService.agregarFactura(this.nuevaFactura).then(() => {
+      this.obtenerFacturas();
+      this.nuevaFactura = {}; // Limpiar el formulario después de agregar
+      this.router.navigate(['/det-factura']);
     });
 
-    // Obtener lista de servicios al inicializar el componente
-    this.servicioService.getServicio().subscribe(servicios => {
-      this.servicios = servicios;
-    });
+    // Calcular el total de la factura después de agregar la factura
+    const [nombreServicio, precio] = this.nuevaFactura.servicio.split('|');
+    this.nuevaFactura.total = this.calcularTotalFactura(this.nuevaFactura);
+    console.log('Nombre del servicio:', nombreServicio);
+    console.log('Precio:', precio);
+    // Realiza otras acciones necesarias
 
-    this.serviciosSeleccionados = [];
   }
 
-  agregarServicio(servicio: any) {
-    // Verificar si el servicio ya está en la lista
-    if (!this.serviciosSeleccionados.some(s => s.id === servicio.id)) {
-      this.serviciosSeleccionados.push({ ...servicio, cantidad: 1 });
-      this.actualizarTotales();
-      console.log('Servicio agregado:', servicio);
-    }
-  }
-
-  actualizarTotales() {
-    // Calcula el subtotal antes de aplicar el descuento
-    const subtotal = this.serviciosSeleccionados.reduce((acc, servicio) => {
-      return acc + servicio.precio * servicio.cantidad;
-    }, 0);
-
-    // Aplica el descuento seleccionado
-    const descuento = subtotal * (this.descuentoSeleccionado / 100);
-
-    // Calcula el total de la factura
-    this.totalFactura = subtotal - descuento;
-  }
-
-  eliminarServicio(servicio: any) {
-    // Elimina el servicio de la lista
-    this.serviciosSeleccionados = this.serviciosSeleccionados.filter(s => s.id !== servicio.id);
-    this.actualizarTotales();
-  }
-
-  facturar() {
-    // Verifica si hay servicios seleccionados
-    if (this.serviciosSeleccionados.length === 0) {
-      // Muestra un mensaje de error o toma la acción que consideres adecuada
-      console.error('No hay servicios seleccionados para facturar.');
+/*
+  agregarFactura() {
+    this.submitted = true;
+    if (this.createFactura.invalid) {
       return;
     }
-
-    // Crea un objeto de factura con los detalles necesarios
-    const factura = {
-      cliente: this.clienteSeleccionado,
-      servicios: this.serviciosSeleccionados,
-      descuento: this.descuentoSeleccionado,
-      total: this.totalFactura
-    };
-
-    // Llama al servicio para guardar la factura
-    this.facturaService.guardarFactura(factura).then(() => {
-      // Maneja el éxito aquí
-      console.log('Factura guardada con éxito!');
-
-      // Reinicia las variables o realiza cualquier otra acción necesaria
-      this.serviciosSeleccionados = [];
-      this.descuentoSeleccionado = 0;
-      this.actualizarTotales();
-
-      // Muestra un mensaje de éxito o redirige a otra página según tu lógica
-      console.log('Factura realizada con éxito!');
-    }).catch(error => {
-      // Maneja los errores aquí
-      console.error('Error al guardar la factura:', error);
-    });
+    const factura: any = {
+      identificacion: this.createFactura.value.cliente,
+      nombre: this.createFactura.value.servicio,
+      direccion: this.createFactura.value.cantidad,
+      correo: this.createFactura.value.descuento,
+      fechaCreacion: new Date(),
+      fechaActualizacion: new Date(),
+    }
+    this.loading = true;
+    this._facturaService.agregarFactura(factura).then(() =>{
+      this.toastr.success('La factura fue Regitrada con Exito!', 'Factura Registrada', {
+        positionClass: 'toast-botton-right'
+      });
+            // Calcular el total de la factura después de agregar la factura
+            this.nuevaFactura.total = this.calcularTotalFactura(this.nuevaFactura);
+      this.loading = false;
+      this.router.navigate(['/det-factura'])
+    }).catch(error =>{
+      console.log(error);
+      this.loading = false;
+    })
   }
+*/
+
+
+
+  calcularTotalFactura(factura: any): number {
+  let total = 0;
+
+  // Utilizar 'factura.servicios' si está definido, de lo contrario, usar 'factura.nuevaFactura.servicios'
+  const servicios = factura.servicios || this.nuevaFactura.servicios;
+
+  // Sumar los totales de cada servicio en la factura
+  for (const servicio of servicios) {
+    total += servicio.total;
+  }
+
+  // Aplicar el descuento
+  total -= (total * factura.descuento) / 100;
+
+  return total;
+}
+
 }
 

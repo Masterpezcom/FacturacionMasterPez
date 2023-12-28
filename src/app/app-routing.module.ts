@@ -9,7 +9,8 @@ import { ListClienteComponent } from './contenido/cliente/lista-cliente/list-cli
 import { ClienteComponent } from './contenido/cliente/cliente.component';
 import { ServicioComponent } from './contenido/servicio/servicio.component';
 import { ListServicioComponent } from './contenido/servicio/list-servicio/list-servicio.component';
-
+import { FacturarComponent } from './contenido/facturar/facturar.component';
+import { DetFacturaComponent } from './contenido/facturar/det-factura/det-factura.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'sesion', pathMatch: 'full' },
@@ -23,6 +24,9 @@ const routes: Routes = [
   { path: 'servicio', component: ServicioComponent },
   { path: 'list-servicio', component: ListServicioComponent },
   { path: 'editServicio/:id', component: ServicioComponent},
+  { path: 'factura', component: FacturarComponent },
+  { path: 'det-factura', component: DetFacturaComponent },
+  { path: 'editFactura/:id', component: FacturarComponent},
   { path: 'dashboard', component: DashboardComponent },
   { path: '**', redirectTo: 'sesion', pathMatch: 'full' },
 ];

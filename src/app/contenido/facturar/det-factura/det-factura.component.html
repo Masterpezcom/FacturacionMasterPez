@@ -1,0 +1,75 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <span class="h3">
+        Listado de Facturas
+      </span>
+      <button class="btn btn-outline-secondary float-end" routerLink="/dashboard/">Regresar</button>
+      <h5 *ngIf="facturas.length == 0">No hay datos Registrados para Mostrar</h5>
+      <table style="margin-top: 30px;" *ngIf="facturas.length > 0" class="table table-hover lore mt-5">
+
+        <div *ngFor="let factura of facturas">
+            <thead class="table-lore">
+              <tr>
+                <th>Cliente</th>
+                <td colspan="7">{{ factura.cliente }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Servicio</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Descuento</th>
+                <th>Total</th>
+                <th>Acciones</th>
+                <th>---</th>
+              </tr>
+              <tr *ngFor="let servicio of factura.servicios">
+                <td>{{ servicio.nombreSer }}</td>
+                <td>{{ servicio.precio }}</td>
+                <td>{{ servicio.cantidad }}</td>
+                <td>{{ servicio.cantidad * servicio.precio }}</td>
+                <td>{{ servicio.descuento }}</td>
+                <td>{{ servicio.total }}</td>
+                <td>
+
+                </td>
+                <td>
+                  <i (click)="quitarServicio(factura, servicio)" class="bi bi-trash text-danger"></i>
+                </td>
+
+              </tr>
+              <tr>
+                <!-- Aquí puedes agregar una fila para el total de la factura -->
+                <th colspan="6">Total de la Factura</th>
+                <td>{{ calcularTotalFactura(factura) }}</td>
+              </tr>
+            </tbody>
+
+
+
+
+      <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Servicio</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="nuevoServicio" name="nuevoServicio">
+          <option *ngFor="let servicio of servicios" [value]="servicio">{{ servicio.nombreSer }}</option>
+        </select>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-outline-success">Guardar Cambios</button>
+          </div>
+
+
+      </div>
+    </div>
+  </div>

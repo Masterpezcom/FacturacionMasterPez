@@ -34,7 +34,7 @@ export class ClienteComponent {
   }
 
   ngOnInit(): void {
-  /* this.esEditar();*/
+
 
   }
 
@@ -64,21 +64,5 @@ export class ClienteComponent {
       this.loading = false;
     })
   }
-
- /* esEditar() {
-    this.titulo = 'Editar Cliente'
-    if(this.id !== null) {
-      this._clienteService.getCliente(this.id).subscribe(data => {
-        console.log(data.payload.data()['nombre']);
-        this.createCliente.setValue({
-          identificacion: data.payload.data()['identificacion'],
-          nombre: data.payload.data()['nombre'],
-          direccion: data.payload.data()['direccion'],
-          correo: data.payload.data()['correo'],
-          telefono: data.payload.data()['telefono'],
-        })
-      })
-    }
-  }*/
 
 }
